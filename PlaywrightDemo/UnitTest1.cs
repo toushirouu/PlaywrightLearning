@@ -16,11 +16,14 @@ namespace PlaywrightDemo
         public async Task Test1()
         {
 
-           
-            await Page.ClickAsync(selector:"id=loginLink");
+            var linkLogin = Page.Locator(selector: "#loginLink");
+            await linkLogin.ClickAsync();
             await Page.FillAsync(selector: "#UserName", value: "admin");
             await Page.FillAsync(selector: "#Password", value: "password");
-            await Page.ClickAsync(selector: "#loginIn");
+
+            var btnLogin = Page.Locator(selector: "#loginIn", new PageLocatorOptions { HasTextString = "Log in" });
+            await btnLogin.ClickAsync();
+
             await Expect(Page.Locator(selector: "text=Employee Details")).ToBeVisibleAsync();
 
             await Page.ScreenshotAsync(new PageScreenshotOptions
