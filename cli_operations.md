@@ -9,9 +9,7 @@ To generate code using CLI execute in powershell in project_name\bin\Debug\net8.
 
 example:
 
-	```
 	.\playwright.ps1 codegen http://eaapp.somee.com
-	```
 
 ### screenshot
 To capture a screenshot of specific page
@@ -19,9 +17,8 @@ To capture a screenshot of specific page
 
 example:
 
-	```
-	- .\playwright.ps1 screenshot --full-page http://eaapp.somee.com test.png
-	```
+	.\playwright.ps1 screenshot --full-page http://eaapp.somee.com test.png
+
 
 ### install 
 Ensure browsers necessary for current version of Playwright are installed
@@ -29,6 +26,4 @@ Ensure browsers necessary for current version of Playwright are installed
 
 example:
 
-	```
-	- .\playwright.ps1 install chrome
-	```
+	.\playwright.ps1 install chrome
