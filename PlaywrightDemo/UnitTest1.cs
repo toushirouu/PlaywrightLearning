@@ -1,35 +1,42 @@
-using System.Runtime.InteropServices;
 using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
 
 namespace PlaywrightDemo
 {
-    public class NunitPlaywright : PageTest
+    public class UnitTestPlaywright
     {
         [SetUp]
-        public async Task Setup()
+        public void Setup()
         {
-            await Page.GotoAsync(url: "http://www.eaapp.somee.com");
+
         }
 
         [Test]
         public async Task Test1()
         {
+            //Playwright
+            using var playwright = await Playwright.CreateAsync();
 
-            var linkLogin = Page.Locator(selector: "#loginLink");
-            await linkLogin.ClickAsync();
-            await Page.FillAsync(selector: "#UserName", value: "admin");
-            await Page.FillAsync(selector: "#Password", value: "password");
+            //Open the browser
+            await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = false
+            });
 
-            var btnLogin = Page.Locator(selector: "#loginIn", new PageLocatorOptions { HasTextString = "Log in" });
-            await btnLogin.ClickAsync();
 
-            await Expect(Page.Locator(selector: "text=Employee Details")).ToBeVisibleAsync();
-
-            await Page.ScreenshotAsync(new PageScreenshotOptions
+            //Page
+            IPage page = await browser.NewPageAsync();
+            await page.GotoAsync(url: "http://www.eaapp.somee.com");
+            await page.ClickAsync(selector: "id=loginLink");
+            await page.ScreenshotAsync(new PageScreenshotOptions
             {
                 Path = "EaApp.jpg"
             });
+
+            await page.FillAsync(selector: "#UserName", value: "admin");
+            await page.FillAsync(selector: "#Password", value: "password");
+            await page.ClickAsync(selector: "#loginIn");
+            bool isExist = await page.Locator(selector: "text=Employee Details").IsVisibleAsync();
+            Assert.IsTrue(isExist);
 
         }
     }
